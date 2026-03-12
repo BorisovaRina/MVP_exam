@@ -558,7 +558,7 @@
                 if (habits.length === 0) {
                     this.elements.habitsList.innerHTML = `
                         <div class="empty-state">
-                            <p>📝 ${this.currentFilter === 'all' ? 'У вас пока нет привычек' : 'Нет привычек для отображения'}</p>
+                            <p>${this.currentFilter === 'all' ? 'У вас пока нет привычек' : 'Нет привычек для отображения'}</p>
                             <p class="empty-state-hint">${this.currentFilter === 'all' ? 'Добавьте свою первую привычку выше' : 'Измените фильтр или добавьте новые привычки'}</p>
                         </div>
                     `;
@@ -663,3 +663,4 @@
     </script>
 </body>
 </html>
+
