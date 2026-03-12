@@ -1,31 +1,34 @@
-
         :root {
-            --color-primary: #6366f1;
-            --color-primary-hover: #4f46e5;
-            --color-primary-light: #e0e7ff;
+            --color-primary: #ec4899;
+            --color-primary-hover: #db2777;
+            --color-primary-light: #fce7f3;
             --color-success: #10b981;
+            --color-success-light: #d1fae5;
             --color-danger: #ef4444;
             --color-warning: #f59e0b;
-            --color-bg: #f8fafc;
+            --color-bg: #fdf2f8;
             --color-surface: #ffffff;
-            --color-text: #1e293b;
-            --color-text-secondary: #64748b;
-            --color-border: #e2e8f0;
+            --color-text: #4c1d95;
+            --color-text-secondary: #7c3aed;
+            --color-border: #f3e8ff;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --shadow-sm: 0 1px 3px rgba(236, 72, 153, 0.1);
+            --shadow-md: 0 4px 6px rgba(236, 72, 153, 0.15);
+            --shadow-lg: 0 10px 25px rgba(236, 72, 153, 0.2);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --color-bg: #0f172a;
-                --color-surface: #1e293b;
-                --color-text: #f1f5f9;
-                --color-text-secondary: #94a3b8;
-                --color-border: #334155;
+                --color-bg: #fef7ff;
+                --color-surface: #fdf4ff;
+                --color-text: #581c87;
+                --color-text-secondary: #7c3aed;
+                --color-border: #e9d5ff;
+                --shadow-sm: 0 1px 3px rgba(168, 85, 247, 0.2);
+                --shadow-md: 0 4px 6px rgba(168, 85, 247, 0.25);
+                --shadow-lg: 0 10px 25px rgba(168, 85, 247, 0.3);
             }
         }
 
@@ -37,11 +40,85 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--color-bg);
+            background: linear-gradient(135deg, var(--color-bg) 0%, #f0fdf4 100%);
             color: var(--color-text);
             line-height: 1.6;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
+        }
+
+        .top-nav {
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-primary-light) 100%);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--color-primary-light);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logo {
+            font-size: 2rem;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            padding: 10px 20px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: 2px solid var(--color-border);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, var(--color-primary), #db2777);
+            color: white;
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         .container {
@@ -53,15 +130,19 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 20px;
-            background: var(--color-surface);
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-primary-light) 100%);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-primary-light);
         }
 
         .header h1 {
             font-size: 2.5rem;
             margin-bottom: 8px;
-            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
@@ -75,11 +156,16 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
             margin-bottom: 30px;
+            border: 1px solid var(--color-border);
+            scroll-margin-top: 80px;
         }
 
         .add-habit-section h2 {
             margin-bottom: 20px;
-            color: var(--color-text);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .habit-form {
@@ -114,9 +200,10 @@
             border: 2px solid var(--color-border);
             border-radius: var(--radius-sm);
             font-size: 1rem;
-            background: var(--color-surface);
+            background: rgba(255, 255, 255, 0.8);
             color: var(--color-text);
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
         }
 
         input:focus,
@@ -125,6 +212,8 @@
             outline: none;
             border-color: var(--color-primary);
             box-shadow: 0 0 0 3px var(--color-primary-light);
+            background: white;
+            transform: translateY(-1px);
         }
 
         textarea {
@@ -148,7 +237,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 12px;
-            background: var(--color-bg);
+            background: linear-gradient(135deg, var(--color-primary-light), var(--color-success-light));
             border: 2px solid var(--color-border);
             border-radius: var(--radius-sm);
             cursor: pointer;
@@ -158,7 +247,8 @@
 
         .days-selector label:hover {
             border-color: var(--color-primary);
-            background: var(--color-primary-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
         }
 
         .days-selector input[type="checkbox"] {
@@ -180,18 +270,18 @@
         }
 
         .btn-primary {
-            background: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), #db2777);
             color: white;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-primary:hover {
-            background: var(--color-primary-hover);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-secondary {
-            background: var(--color-bg);
+            background: var(--color-surface);
             color: var(--color-text);
             border: 2px solid var(--color-border);
         }
@@ -199,24 +289,28 @@
         .btn-secondary:hover {
             border-color: var(--color-primary);
             color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-success {
-            background: var(--color-success);
+            background: linear-gradient(135deg, var(--color-success), #059669);
             color: white;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-success:hover {
-            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-danger {
-            background: var(--color-danger);
+            background: linear-gradient(135deg, var(--color-danger), #dc2626);
             color: white;
         }
 
         .btn-danger:hover {
-            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-small {
@@ -229,6 +323,8 @@
             padding: 30px;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+            scroll-margin-top: 80px;
         }
 
         .section-header {
@@ -261,8 +357,14 @@
             color: var(--color-primary);
         }
 
+        .filter-btn:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
         .filter-btn.active {
-            background: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), #db2777);
             color: white;
             border-color: var(--color-primary);
         }
@@ -274,21 +376,23 @@
         }
 
         .habit-card {
-            background: var(--color-bg);
+            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(236, 72, 153, 0.03) 100%);
             padding: 20px;
             border-radius: var(--radius-md);
             border: 2px solid var(--color-border);
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .habit-card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            border-color: var(--color-primary-light);
         }
 
         .habit-card.completed-today {
             border-color: var(--color-success);
-            background: linear-gradient(135deg, var(--color-surface) 0%, rgba(16, 185, 129, 0.05) 100%);
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-success-light) 100%);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
         }
 
         .habit-header {
@@ -307,7 +411,10 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 4px;
-            color: var(--color-text);
+            background: linear-gradient(135deg, var(--color-text), var(--color-text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .habit-description {
@@ -328,6 +435,10 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            background: var(--color-primary-light);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
         }
 
         .habit-stats {
@@ -340,14 +451,18 @@
         .stat-item {
             text-align: center;
             padding: 12px;
-            background: var(--color-surface);
+            background: linear-gradient(135deg, var(--color-surface), var(--color-success-light));
             border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
         }
 
         .stat-value {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-label {
@@ -375,6 +490,10 @@
 
         .empty-state-hint {
             font-size: 1rem;
+            background: var(--color-primary-light);
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            display: inline-block;
         }
 
         .modal {
@@ -384,7 +503,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             padding: 20px;
             overflow-y: auto;
@@ -404,6 +524,7 @@
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
         }
 
         .modal-header {
@@ -411,7 +532,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 24px 30px;
-            border-bottom: 2px solid var(--color-border);
+            border-bottom: 2px solid var(--color-primary-light);
+            background: linear-gradient(135deg, var(--color-surface), var(--color-primary-light));
         }
 
         .modal-header h2 {
@@ -425,12 +547,19 @@
             font-size: 2rem;
             cursor: pointer;
             color: var(--color-text-secondary);
-            transition: color 0.2s;
+            transition: all 0.2s;
             line-height: 1;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-modal:hover {
-            color: var(--color-danger);
+            background: var(--color-danger);
+            color: white;
         }
 
         .modal-body {
@@ -445,17 +574,26 @@
         }
 
         .stat-card {
-            background: var(--color-bg);
+            background: linear-gradient(135deg, var(--color-bg), var(--color-success-light));
             padding: 20px;
             border-radius: var(--radius-md);
             text-align: center;
-            border: 2px solid var(--color-border);
+            border: 2px solid var(--color-primary-light);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-card .stat-value {
             font-size: 2rem;
             font-weight: 700;
-            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 8px;
         }
 
@@ -484,32 +622,57 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--color-bg);
+            background: var(--color-primary-light);
             border-radius: var(--radius-sm);
             font-size: 0.85rem;
-            color: var(--color-text-secondary);
+            color: var(--color-text);
             border: 2px solid var(--color-border);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            transform: scale(1.1);
         }
 
         .calendar-day.completed {
-            background: var(--color-success);
+            background: linear-gradient(135deg, var(--color-success), #059669);
             color: white;
             border-color: var(--color-success);
-            font-weight: 600;
+            box-shadow: var(--shadow-sm);
         }
 
         .calendar-day.missed {
-            background: var(--color-danger);
+            background: linear-gradient(135deg, var(--color-danger), #dc2626);
             color: white;
             border-color: var(--color-danger);
         }
 
         .calendar-day.future {
-            opacity: 0.3;
+            opacity: 0.4;
+            background: var(--color-border);
         }
 
         @media (max-width: 768px) {
-            body {
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-brand {
+                justify-content: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .nav-link {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .container {
                 padding: 12px;
             }
 
@@ -568,5 +731,4 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-
         }
