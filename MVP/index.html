@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер Привычек</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Трекер Привычек</h1>
+            <p class="subtitle">Развивай полезные привычки каждый день</p>
+        </header>
+
+        <!-- Add Habit Section -->
+        <section class="add-habit-section">
+            <h2>Добавить новую привычку</h2>
+            <form id="habitForm" class="habit-form">
+                <div class="form-group">
+                    <label for="habitName">Название привычки *</label>
+                    <input type="text" id="habitName" placeholder="Например: Утренняя зарядка" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="habitDescription">Описание</label>
+                    <textarea id="habitDescription" placeholder="Краткое описание привычки" rows="2"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="habitFrequency">Периодичность</label>
+                        <select id="habitFrequency">
+                            <option value="daily">Ежедневно</option>
+                            <option value="weekly">Еженедельно</option>
+                            <option value="custom">Выборочные дни</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="habitReminder">Время напоминания</label>
+                        <input type="time" id="habitReminder">
+                    </div>
+                </div>
+                
+                <div id="customDays" class="custom-days" style="display: none;">
+                    <label>Выберите дни недели:</label>
+                    <div class="days-selector">
+                        <label><input type="checkbox" value="1"> Пн</label>
+                        <label><input type="checkbox" value="2"> Вт</label>
+                        <label><input type="checkbox" value="3"> Ср</label>
+                        <label><input type="checkbox" value="4"> Чт</label>
+                        <label><input type="checkbox" value="5"> Пт</label>
+                        <label><input type="checkbox" value="6"> Сб</label>
+                        <label><input type="checkbox" value="0"> Вс</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Добавить привычку</button>
+            </form>
+        </section>
+
+        <!-- Habits List -->
+        <section class="habits-section">
+            <div class="section-header">
+                <h2>Мои привычки</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Все</button>
+                    <button class="filter-btn" data-filter="today">Сегодня</button>
+                    <button class="filter-btn" data-filter="completed">Выполнено</button>
+                </div>
+            </div>
+            
+            <div id="habitsList" class="habits-list">
+                <div class="empty-state">
+                    <p>📝У вас пока нет привычек</p>
+                    <p class="empty-state-hint">Добавьте свою первую привычку выше</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Modal -->
+        <div id="statsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="statsTitle">Статистика привычки</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statCompletion">0%</div>
+                            <div class="stat-label">Процент выполнения</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statCurrentStreak">0</div>
+                            <div class="stat-label">Текущая серия дней</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statBestStreak">0</div>
+                            <div class="stat-label">Лучшая серия</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotalDays">0</div>
+                            <div class="stat-label">Всего дней выполнения</div>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <h3>История выполнения (последние 30 дней)</h3>
+                        <div id="habitCalendar" class="habit-calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Редактировать привычку</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editHabitForm" class="habit-form">
+                        <input type="hidden" id="editHabitId">
+                        
+                        <div class="form-group">
+                            <label for="editHabitName">Название привычки *</label>
+                            <input type="text" id="editHabitName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="editHabitDescription">Описание</label>
+                            <textarea id="editHabitDescription" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editHabitFrequency">Периодичность</label>
+                                <select id="editHabitFrequency">
+                                    <option value="daily">Ежедневно</option>
+                                    <option value="weekly">Еженедельно</option>
+                                    <option value="custom">Выборочные дни</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editHabitReminder">Время напоминания</label>
+                                <input type="time" id="editHabitReminder">
+                            </div>
+                        </div>
+                        
+                        <div id="editCustomDays" class="custom-days" style="display: none;">
+                            <label>Выберите дни недели:</label>
+                            <div class="days-selector">
+                                <label><input type="checkbox" value="1"> Пн</label>
+                                <label><input type="checkbox" value="2"> Вт</label>
+                                <label><input type="checkbox" value="3"> Ср</label>
+                                <label><input type="checkbox" value="4"> Чт</label>
+                                <label><input type="checkbox" value="5"> Пт</label>
+                                <label><input type="checkbox" value="6"> Сб</label>
+                                <label><input type="checkbox" value="0"> Вс</label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+
+    <script>
+        const HabitStorage = {
+            STORAGE_KEY: 'habitTrackerData',
+
+            loadData() {
+                try {
+                    const data = JSON.parse(JSON.stringify(this.getDefaultData()));
+                    const stored = this.getStoredData();
+                    if (stored) {
+                        Object.assign(data, stored);
+                    }
+                    return data;
+                } catch (error) {
+                    console.error('Ошибка загрузки данных:', error);
+                    return this.getDefaultData();
+                }
+            },
+
+            getStoredData() {
+                const key = this.STORAGE_KEY;
+                const stored = this[key];
+                return stored ? JSON.parse(JSON.stringify(stored)) : null;
+            },
+
+            saveData(data) {
+                try {
+                    this[this.STORAGE_KEY] = JSON.parse(JSON.stringify(data));
+                    return true;
+                } catch (error) {
+                    console.error('Ошибка сохранения данных:', error);
+                    return false;
+                }
+            },
+
+            getDefaultData() {
+                return {
+                    habits: [],
+                    nextId: 1
+                };
+            }
+        };
+
+        const HabitManager = {
+            data: null,
+
+            init() {
+                this.data = HabitStorage.loadData();
+            },
+
+            createHabit(habitData) {
+                const habit = {
+                    id: this.data.nextId++,
+                    name: habitData.name,
+                    description: habitData.description || '',
+                    frequency: habitData.frequency || 'daily',
+                    customDays: habitData.customDays || [],
+                    reminderTime: habitData.reminderTime || null,
+                    completions: [],
+                    createdAt: new Date().toISOString()
+                };
+
+                this.data.habits.push(habit);
+                this.saveData();
+                return habit;
+            },
+
+            updateHabit(id, updates) {
+                const habit = this.getHabitById(id);
+                if (!habit) return false;
+
+                Object.assign(habit, updates);
+                this.saveData();
+                return true;
+            },
+
+            deleteHabit(id) {
+                const index = this.data.habits.findIndex(h => h.id === id);
+                if (index === -1) return false;
+
+                this.data.habits.splice(index, 1);
+                this.saveData();
+                return true;
+            },
+
+            toggleCompletion(id, date) {
+                const habit = this.getHabitById(id);
+                if (!habit) return false;
+
+                const dateStr = this.formatDate(date);
+                const index = habit.completions.indexOf(dateStr);
+
+                if (index > -1) {
+                    habit.completions.splice(index, 1);
+                } else {
+                    habit.completions.push(dateStr);
+                }
+
+                this.saveData();
+                return true;
+            },
+
+            getHabitById(id) {
+                return this.data.habits.find(h => h.id === id);
+            },
+
+            getAllHabits() {
+                return this.data.habits;
+            },
+
+            isCompletedToday(habit) {
+                const today = this.formatDate(new Date());
+                return habit.completions.includes(today);
+            },
+
+            isScheduledForDay(habit, date) {
+                if (habit.frequency === 'daily') return true;
+                if (habit.frequency === 'weekly') return date.getDay() === 1;
+                if (habit.frequency === 'custom') {
+                    return habit.customDays.includes(date.getDay());
+                }
+                return false;
+            },
+
+            getStatistics(habit) {
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+                let scheduledDays = 0;
+                let completedDays = 0;
+                let currentStreak = 0;
+                let bestStreak = 0;
+                let tempStreak = 0;
+
+                const calendar = [];
+
+                for (let d = new Date(thirtyDaysAgo); d <= today; d.setDate(d.getDate() + 1)) {
+                    const dateStr = this.formatDate(d);
+                    const isScheduled = this.isScheduledForDay(habit, d);
+                    const isCompleted = habit.completions.includes(dateStr);
+                    const isFuture = d > today;
+
+                    calendar.push({
+                        date: new Date(d),
+                        dateStr: dateStr,
+                        isScheduled: isScheduled,
+                        isCompleted: isCompleted,
+                        isFuture: isFuture
+                    });
+
+                    if (isScheduled && !isFuture) {
+                        scheduledDays++;
+                        if (isCompleted) {
+                            completedDays++;
+                            tempStreak++;
+                            bestStreak = Math.max(bestStreak, tempStreak);
+                        } else {
+                            tempStreak = 0;
+                        }
+                    }
+                }
+
+                const recentDays = calendar.slice(-30);
+                for (let i = recentDays.length - 1; i >= 0; i--) {
+                    const day = recentDays[i];
+                    if (day.isScheduled && !day.isFuture) {
+                        if (day.isCompleted) {
+                            currentStreak++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                return {
+                    completionRate: scheduledDays > 0 ? Math.round((completedDays / scheduledDays) * 100) : 0,
+                    currentStreak: currentStreak,
+                    bestStreak: bestStreak,
+                    totalDays: habit.completions.length,
+                    calendar: calendar
+                };
+            },
+
+            formatDate(date) {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            },
+
+            saveData() {
+                HabitStorage.saveData(this.data);
+            }
+        };
+
+        const HabitUI = {
+            elements: {},
+            currentFilter: 'all',
+
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+                this.render();
+            },
+
+            cacheElements() {
+                this.elements = {
+                    habitForm: document.getElementById('habitForm'),
+                    habitName: document.getElementById('habitName'),
+                    habitDescription: document.getElementById('habitDescription'),
+                    habitFrequency: document.getElementById('habitFrequency'),
+                    habitReminder: document.getElementById('habitReminder'),
+                    customDays: document.getElementById('customDays'),
+                    habitsList: document.getElementById('habitsList'),
+                    filterButtons: document.querySelectorAll('.filter-btn'),
+                    statsModal: document.getElementById('statsModal'),
+                    editModal: document.getElementById('editModal'),
+                    editHabitForm: document.getElementById('editHabitForm'),
+                    editHabitId: document.getElementById('editHabitId'),
+                    editHabitName: document.getElementById('editHabitName'),
+                    editHabitDescription: document.getElementById('editHabitDescription'),
+                    editHabitFrequency: document.getElementById('editHabitFrequency'),
+                    editHabitReminder: document.getElementById('editHabitReminder'),
+                    editCustomDays: document.getElementById('editCustomDays')
+                };
+            },
+
+            bindEvents() {
+                this.elements.habitForm.addEventListener('submit', (e) => this.handleAddHabit(e));
+                this.elements.habitFrequency.addEventListener('change', (e) => this.toggleCustomDays(e.target.value, this.elements.customDays));
+                this.elements.editHabitFrequency.addEventListener('change', (e) => this.toggleCustomDays(e.target.value, this.elements.editCustomDays));
+                
+                this.elements.filterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleFilter(e));
+                });
+
+                this.elements.editHabitForm.addEventListener('submit', (e) => this.handleEditHabit(e));
+
+                document.querySelectorAll('.close-modal').forEach(btn => {
+                    btn.addEventListener('click', () => this.closeModals());
+                });
+
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) this.closeModals();
+                    });
+                });
+            },
+
+            toggleCustomDays(frequency, container) {
+                container.style.display = frequency === 'custom' ? 'block' : 'none';
+            },
+
+            handleAddHabit(e) {
+                e.preventDefault();
+
+                const customDays = [];
+                if (this.elements.habitFrequency.value === 'custom') {
+                    this.elements.customDays.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                        customDays.push(parseInt(cb.value));
+                    });
+                }
+
+                const habitData = {
+                    name: this.elements.habitName.value.trim(),
+                    description: this.elements.habitDescription.value.trim(),
+                    frequency: this.elements.habitFrequency.value,
+                    customDays: customDays,
+                    reminderTime: this.elements.habitReminder.value || null
+                };
+
+                HabitManager.createHabit(habitData);
+                this.elements.habitForm.reset();
+                this.elements.customDays.style.display = 'none';
+                this.render();
+            },
+
+            handleEditHabit(e) {
+                e.preventDefault();
+
+                const id = parseInt(this.elements.editHabitId.value);
+                const customDays = [];
+                
+                if (this.elements.editHabitFrequency.value === 'custom') {
+                    this.elements.editCustomDays.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                        customDays.push(parseInt(cb.value));
+                    });
+                }
+
+                const updates = {
+                    name: this.elements.editHabitName.value.trim(),
+                    description: this.elements.editHabitDescription.value.trim(),
+                    frequency: this.elements.editHabitFrequency.value,
+                    customDays: customDays,
+                    reminderTime: this.elements.editHabitReminder.value || null
+                };
+
+                HabitManager.updateHabit(id, updates);
+                this.closeModals();
+                this.render();
+            },
+
+            handleFilter(e) {
+                this.elements.filterButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                this.currentFilter = e.target.dataset.filter;
+                this.render();
+            },
+
+            openEditModal(habitId) {
+                const habit = HabitManager.getHabitById(habitId);
+                if (!habit) return;
+
+                this.elements.editHabitId.value = habit.id;
+                this.elements.editHabitName.value = habit.name;
+                this.elements.editHabitDescription.value = habit.description;
+                this.elements.editHabitFrequency.value = habit.frequency;
+                this.elements.editHabitReminder.value = habit.reminderTime || '';
+
+                this.toggleCustomDays(habit.frequency, this.elements.editCustomDays);
+
+                this.elements.editCustomDays.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = habit.customDays.includes(parseInt(cb.value));
+                });
+
+                this.elements.editModal.classList.add('active');
+            },
+
+            openStatsModal(habitId) {
+                const habit = HabitManager.getHabitById(habitId);
+                if (!habit) return;
+
+                const stats = HabitManager.getStatistics(habit);
+
+                document.getElementById('statsTitle').textContent = `Статистика: ${habit.name}`;
+                document.getElementById('statCompletion').textContent = `${stats.completionRate}%`;
+                document.getElementById('statCurrentStreak').textContent = stats.currentStreak;
+                document.getElementById('statBestStreak').textContent = stats.bestStreak;
+                document.getElementById('statTotalDays').textContent = stats.totalDays;
+
+                const calendarContainer = document.getElementById('habitCalendar');
+                calendarContainer.innerHTML = stats.calendar.slice(-30).map(day => {
+                    let className = 'calendar-day';
+                    if (day.isFuture) className += ' future';
+                    else if (day.isCompleted) className += ' completed';
+                    else if (day.isScheduled) className += ' missed';
+
+                    return `<div class="${className}" title="${day.dateStr}">${day.date.getDate()}</div>`;
+                }).join('');
+
+                this.elements.statsModal.classList.add('active');
+            },
+
+            closeModals() {
+                this.elements.statsModal.classList.remove('active');
+                this.elements.editModal.classList.remove('active');
+            },
+
+            render() {
+                let habits = HabitManager.getAllHabits();
+
+                if (this.currentFilter === 'today') {
+                    habits = habits.filter(h => HabitManager.isScheduledForDay(h, new Date()));
+                } else if (this.currentFilter === 'completed') {
+                    habits = habits.filter(h => HabitManager.isCompletedToday(h));
+                }
+
+                if (habits.length === 0) {
+                    this.elements.habitsList.innerHTML = `
+                        <div class="empty-state">
+                            <p>📝${this.currentFilter === 'all' ? 'У вас пока нет привычек' : 'Нет привычек для отображения'}</p>
+                            <p class="empty-state-hint">${this.currentFilter === 'all' ? 'Добавьте свою первую привычку выше' : 'Измените фильтр или добавьте новые привычки'}</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                this.elements.habitsList.innerHTML = habits.map(habit => this.renderHabitCard(habit)).join('');
+
+                habits.forEach(habit => {
+                    const card = document.querySelector(`[data-habit-id="${habit.id}"]`);
+                    if (!card) return;
+
+                    card.querySelector('.btn-complete').addEventListener('click', () => {
+                        HabitManager.toggleCompletion(habit.id, new Date());
+                        this.render();
+                    });
+
+                    card.querySelector('.btn-stats').addEventListener('click', () => {
+                        this.openStatsModal(habit.id);
+                    });
+
+                    card.querySelector('.btn-edit').addEventListener('click', () => {
+                        this.openEditModal(habit.id);
+                    });
+
+                    card.querySelector('.btn-delete').addEventListener('click', () => {
+                        if (confirm(`Удалить привычку "${habit.name}"?`)) {
+                            HabitManager.deleteHabit(habit.id);
+                            this.render();
+                        }
+                    });
+                });
+            },
+
+            renderHabitCard(habit) {
+                const isCompleted = HabitManager.isCompletedToday(habit);
+                const stats = HabitManager.getStatistics(habit);
+                const frequencyText = this.getFrequencyText(habit);
+
+                return `
+                    <div class="habit-card ${isCompleted ? 'completed-today' : ''}" data-habit-id="${habit.id}">
+                        <div class="habit-header">
+                            <div class="habit-info">
+                                <div class="habit-title">${this.escapeHtml(habit.name)}</div>
+                                ${habit.description ? `<div class="habit-description">${this.escapeHtml(habit.description)}</div>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="habit-meta">
+                            <span>${frequencyText}</span>
+                            ${habit.reminderTime ? `<span>${habit.reminderTime}</span>` : ''}
+                        </div>
+                        
+                        <div class="habit-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">${stats.completionRate}%</div>
+                                <div class="stat-label">Выполнено</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${stats.currentStreak}</div>
+                                <div class="stat-label">Серия дней</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${stats.totalDays}</div>
+                                <div class="stat-label">Всего дней</div>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-actions">
+                            <button class="btn ${isCompleted ? 'btn-secondary' : 'btn-success'} btn-complete">
+                                ${isCompleted ? '✓ Выполнено' : '+ Отметить'}
+                            </button>
+                            <button class="btn btn-secondary btn-small btn-stats">Статистика</button>
+                            <button class="btn btn-secondary btn-small btn-edit">Изменить</button>
+                            <button class="btn btn-danger btn-small btn-delete">Удалить</button>
+                        </div>
+                    </div>
+                `;
+            },
+
+            getFrequencyText(habit) {
+                if (habit.frequency === 'daily') return 'Ежедневно';
+                if (habit.frequency === 'weekly') return 'Еженедельно';
+                if (habit.frequency === 'custom') {
+                    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                    return habit.customDays.map(d => days[d]).join(', ');
+                }
+                return '';
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            HabitManager.init();
+            HabitUI.init();
+        });
+    </script>
+</body>
+</html>
